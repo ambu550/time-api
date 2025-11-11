@@ -12,7 +12,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:19-ea-alpine
 
 # Install bash (needed to start/stop the app) tzdata (for time zones)
-RUN apk add --no-cache bash tzdata && \
+RUN apk add --no-cache bash curl tzdata && \
      ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
      echo $TZ && \
     rm -rf /var/lib/apt/lists/*
@@ -39,9 +39,12 @@ VOLUME /app/myapp
 
 EXPOSE 8080
 
-# Start Spring Boot time wrapper
-ENTRYPOINT ["java","-jar","/app/time-api.jar"]
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
 
-# docker build -t ambu550/faketime-jdk19-alpine:0.1.0 .
-# docker tag ambu550/faketime-jdk19-alpine:0.1.0 ambu550/faketime-jdk19-alpine:latest
+# Start Spring Boot time wrapper
+CMD ["./start.sh"]
+
+# docker build -t ambu550/faketime-jdk19-alpine:0.2.0 .
+# docker tag ambu550/faketime-jdk19-alpine:0.2.0 ambu550/faketime-jdk19-alpine:latest
 # docker push  ambu550/faketime-jdk19-alpine:latest
