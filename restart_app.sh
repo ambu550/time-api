@@ -10,9 +10,9 @@ if [ -n "$PID" ]; then
     echo "Stopping $APP_NAME (PID: $PID)..."
     kill "$PID"
     # Wait for the process to terminate
-    while ps -p "$PID" > /dev/null; do
-        sleep 1
-    done
+#    while ps "$PID" > /dev/null; do
+#        sleep 1
+#    done
     echo "$APP_NAME stopped."
 else
     echo "$APP_NAME is not running, starting a new instance."
