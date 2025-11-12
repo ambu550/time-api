@@ -68,7 +68,7 @@ curl -X POST http://localhost:8080/reset-time \
          }'
 ```
 
-#### Check health with timeouts & get server time
+#### Check health with timeout
 ```
 curl -X POST http://localhost:8080/check-health\
      -H "Content-Type: application/json" \

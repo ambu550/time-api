@@ -20,6 +20,7 @@ public class TimeController {
     private final File appJar = new File("/app/myapp/myapp.jar");
 
     private static final int HEALTH_TIMEOUT_SECONDS = 30;
+    private static final int HEALTH_PRE_WAIT_MS = 2000;
 
     @PostMapping("/set-time")
     public String setTime(@RequestBody TimeRequest req) throws Exception {
@@ -55,7 +56,7 @@ public class TimeController {
             return "FAKETIME set to " + time + " app restarted (no health check URL provided)";
         }
 
-        boolean healthy = waitForHealth(healthUrl, HEALTH_TIMEOUT_SECONDS);
+        boolean healthy = waitForHealth(healthUrl, HEALTH_PRE_WAIT_MS);
         if (healthy) {
             return "FAKETIME set to " + time + ", app restarted & healthy at " + healthUrl;
         } else {
@@ -92,7 +93,7 @@ public class TimeController {
 
         String healthUrl = req.getHealthUrl();
 
-        boolean healthy = waitForHealth(healthUrl, HEALTH_TIMEOUT_SECONDS);
+        boolean healthy = waitForHealth(healthUrl, HEALTH_PRE_WAIT_MS);
         if (healthy) {
             return "Time set to local, app restarted & healthy at " + healthUrl;
         } else {
@@ -105,7 +106,7 @@ public class TimeController {
     public String checkHealth(@RequestBody HealthRequest req) throws InterruptedException {
         String healthUrl = req.getHealthUrl();
 
-        boolean healthy = waitForHealth(healthUrl, HEALTH_TIMEOUT_SECONDS);
+        boolean healthy = waitForHealth(healthUrl, 0);
         if (healthy) {
             return MessageFormat.format("""
                 Service healthy on {0}""",
@@ -136,11 +137,11 @@ public class TimeController {
         public void setHealthUrl(String healthUrl) { this.healthUrl = healthUrl; }
     }
 
-    private boolean waitForHealth(String healthUrl, int timeoutSeconds) throws InterruptedException {
+    private boolean waitForHealth(String healthUrl, int waitMs) throws InterruptedException {
         Instant start = Instant.now();
-        Thread.sleep(2000);
+        Thread.sleep(waitMs);
         logger.info("Start health check.....");
-        while (Duration.between(start, Instant.now()).getSeconds() < timeoutSeconds) {
+        while (Duration.between(start, Instant.now()).getSeconds() < HEALTH_TIMEOUT_SECONDS) {
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(healthUrl).openConnection();
                 connection.setConnectTimeout(2000);
