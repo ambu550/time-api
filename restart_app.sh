@@ -8,7 +8,7 @@ PID=$(ps aux | grep "$APP_NAME" | grep -v grep | awk '{print $2}')
 
 if [ -n "$PID" ]; then
     echo "Stopping $APP_NAME (PID: $PID)..."
-    kill "$PID"
+    kill -9 "$PID"
 
 
     # Wait for the process to terminate
