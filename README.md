@@ -68,6 +68,15 @@ curl -X POST http://localhost:8080/reset-time \
          }'
 ```
 
+#### Check health with timeouts & get server time
+```
+curl -X POST http://localhost:8080/check-health\
+     -H "Content-Type: application/json" \
+     -d '{
+           "healthUrl": "http://localhost:28443/actuator/health"
+         }'
+```
+
 ## Powered by
 #### https://hub.docker.com/r/trajano/alpine-libfaketime
 #### https://github.com/wolfcw/libfaketime
