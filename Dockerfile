@@ -45,6 +45,7 @@ RUN chmod +x /app/start.sh
 # Start Spring Boot time wrapper
 CMD ["./start.sh"]
 
-# docker build -t ambu550/faketime-jdk19-alpine:0.2.0 .
-# docker tag ambu550/faketime-jdk19-alpine:0.2.0 ambu550/faketime-jdk19-alpine:latest
-# docker push  ambu550/faketime-jdk19-alpine:latest
+# docker build -t ambu550/faketime-jdk19-alpine:0.3.0 .
+# docker tag ambu550/faketime-jdk19-alpine:0.3.0 ambu550/faketime-jdk19-alpine:latest
+# docker push ambu550/faketime-jdk19-alpine:0.3.0
+# docker push ambu550/faketime-jdk19-alpine:latest
